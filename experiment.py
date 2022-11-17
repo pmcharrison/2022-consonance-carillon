@@ -12,7 +12,9 @@ from psynet.timeline import Timeline
 from psynet.trial.static import StaticTrial, StaticNode, StaticTrialMaker
 from psynet.utils import get_logger
 
-from psynet.js_synth import JSSynth, Chord, StretchedTimbre
+from psynet.js_synth import JSSynth, Chord, StretchedTimbre, InstrumentTimbre
+
+from .carillon import carillon_timbre
 
 logger = get_logger()
 
@@ -21,23 +23,16 @@ nodes = [
     StaticNode(
         definition={
             "timbre": timbre,
-            "presentation": presentation,
             "repetition": repetition,
         },
-        block=presentation,
     )
-    for timbre in ["stretched"]
-    for presentation in ["dichotic", "diotic"]
-    for repetition in range(25)
+    for timbre in ["carillon"]
+    for repetition in range(50)
 ]
 
+
 timbres = {
-    "stretched": StretchedTimbre(
-        attack=0.2,
-        decay=0.1,
-        sustain_amp=0.8,
-        release=1.0
-    ),
+    "carillon": carillon_timbre
 }
 
 
@@ -45,21 +40,10 @@ class ConsonanceTrial(StaticTrial):
     time_estimate = 5
 
     def finalize_definition(self, definition, experiment, participant):
-        definition["duration"] = 1.8  # The original duration in Marjieh et al. was 1.3 s
-        definition["lower_pitch"] = random.uniform(55, 65)
+        definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
+        definition["lower_pitch"] = random.uniform(15, 25)
         definition["pitch_interval"] = random.uniform(11, 13.5)
         definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
-
-        if definition["presentation"] == "diotic":
-            definition["lower_pan"] = 0
-            definition["upper_pan"] = 0
-        else:
-            if random.choice([False, True]):
-                definition["lower_pan"] = -1
-                definition["upper_pan"] = 1
-            else:
-                definition["lower_pan"] = 1
-                definition["upper_pan"] = -1
 
         return definition
 
@@ -75,10 +59,6 @@ class ConsonanceTrial(StaticTrial):
                             self.definition["upper_pitch"],
                         ],
                         duration=self.definition["duration"],
-                        pan=[
-                            self.definition["lower_pan"],
-                            self.definition["upper_pan"],
-                        ],
                     )
                 ],
                 timbre=timbres[self.definition["timbre"]],
@@ -100,7 +80,7 @@ class ConsonanceTrial(StaticTrial):
 
 
 class Exp(psynet.experiment.Experiment):
-    label = "Dichotic stretching experiment"
+    label = "Carillon experiment"
 
     timeline = Timeline(
         NoConsent(),
