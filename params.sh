@@ -1,0 +1,2 @@
+export EXPERIMENT_IMAGE=consonance-dichotic-stretching
+export DOCKER_BUILDKIT=1

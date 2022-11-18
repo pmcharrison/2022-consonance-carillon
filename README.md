@@ -50,3 +50,10 @@ Click Docker, and then under 'image name' enter 'consonance-dichotic-stretching:
 Press OK. Now if you click on 'Python console' at the bottom of the screen, you should get a Python interpreter
 corresponding to the image you just built.
 
+# Running
+
+To run the experiment in debug (local) mode, run the following in your terminal:
+
+```
+bash debug.sh
+```
