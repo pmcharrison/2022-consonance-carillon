@@ -74,7 +74,7 @@ class ConsonanceTrial(StaticTrial):
                     "(6)",
                     "(7) Very pleasant",
                 ],
-                arrange_vertically=False,
+                arrange_vertically=True,
             )
         )
 
