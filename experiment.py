@@ -59,6 +59,7 @@ class ConsonanceTrial(StaticTrial):
                             self.definition["upper_pitch"],
                         ],
                         duration=self.definition["duration"],
+                        volume=0.5,  # Needed otherwise the sound gets distorted
                     )
                 ],
                 timbre=timbres[self.definition["timbre"]],
@@ -84,6 +85,8 @@ class Exp(psynet.experiment.Experiment):
 
     timeline = Timeline(
         NoConsent(),
+        # To do - add Cambridge consent
+        # To do - add volume calibration
         InfoPage(
             "Welcome to the experiment!",
             time_estimate=5,
@@ -100,6 +103,7 @@ class Exp(psynet.experiment.Experiment):
             balance_across_nodes=False,
             target_n_participants=50,
         ),
+        # To do - add questionnaire
         SuccessfulEndPage(),
     )
 

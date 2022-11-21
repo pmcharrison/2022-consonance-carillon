@@ -9,4 +9,4 @@
 dallinger@git+https://github.com/Dallinger/Dallinger.git@cb8e1db0e97e45ba5582f15cdfd24f55ce452b7f#egg=dallinger
 
 # Example pinning a particular version of PsyNet
-psynet@git+https://psynet:DbsyggsVovh7UJTtxRtC@gitlab.com/computational-audition-lab/psynet@06c0ce5f74f7c9788adcd7430e225e9c4102dab2#egg=psynet
+psynet@git+https://psynet:DbsyggsVovh7UJTtxRtC@gitlab.com/computational-audition-lab/psynet@6eb9ac87e529526bbc83131e5509f5a843cacb8f#egg=psynet
