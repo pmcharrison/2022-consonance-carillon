@@ -1,2 +1,2 @@
-export EXPERIMENT_IMAGE=consonance-dichotic-stretching
+export EXPERIMENT_IMAGE=$(basename "$PWD")
 export DOCKER_BUILDKIT=1
