@@ -10,14 +10,26 @@
 #   This simplifies the logic and ensures that experimenters can specify package versions precisely if they want.
 #   The small performance overhead is mostly eliminated by caching.
 
-FROM registry.gitlab.com/computational-audition-lab/psynet:v10-draft
+FROM registry.gitlab.com/psynetdev/psynet:v10-draft
 
 RUN mkdir /experiment
 WORKDIR /experiment
 
 COPY requirements.txt requirements.txt
 RUN python3 -m pip install -r requirements.txt
+
+WORKDIR /
+
+ARG PSYNET_EDITABLE
+RUN if [[ "$PSYNET_EDITABLE" = 1 ]] ; then pip install -e /PsyNet ; fi
+
+WORKDIR /experiment
+
+COPY *prepare_docker_image.sh prepare_docker_image.sh
+RUN if test -f prepare_docker_image.sh ; then bash prepare_docker_image.sh ; fi
+
 COPY . /experiment
 
 ENV PORT=5000
+
 CMD dallinger_heroku_web
