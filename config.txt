@@ -38,3 +38,4 @@ clock_on = true
 dallinger_develop_directory = /tmp/dallinger_develop
 
 docker_image_base_name = registry.gitlab.developers.cam.ac.uk/mus/cms/psynet-experiment-images
+docker_image_name = registry.gitlab.developers.cam.ac.uk/mus/cms/psynet-experiment-images@sha256:f9fd30a8118a8c56fffc8ac636ef4fe62b473d112acc8e5933d91aae65129c11

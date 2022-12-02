@@ -41,8 +41,8 @@ class ConsonanceTrial(StaticTrial):
 
     def finalize_definition(self, definition, experiment, participant):
         definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
-        definition["lower_pitch"] = random.uniform(15, 25)
-        definition["pitch_interval"] = random.uniform(11, 13.5)
+        definition["lower_pitch"] = random.uniform(79, 79)  # The current samples go from MIDI 78.56 to 92.5
+        definition["pitch_interval"] = random.uniform(0, 15)
         definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
 
         return definition
