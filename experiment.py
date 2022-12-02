@@ -5,6 +5,7 @@ import random
 from flask import Markup
 
 import psynet.experiment
+from psynet.asset import FastFunctionAsset
 from psynet.consent import MainConsent, NoConsent
 from psynet.modular_page import PushButtonControl
 from psynet.page import InfoPage, SuccessfulEndPage, ModularPage
@@ -45,7 +46,18 @@ class ConsonanceTrial(StaticTrial):
         definition["pitch_interval"] = random.uniform(0, 15)
         definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
 
+        self.add_assets(
+            {
+                "stimulus": FastFunctionAsset(
+                    function=synth_stimulus,
+                    extension=".wav",
+                )
+            }
+        )
         return definition
+
+    def synth_stimulus(self, path, lower_pitch, upper_pitch):
+        carillon_timbre
 
     def show_trial(self, experiment, participant):
         return ModularPage(
