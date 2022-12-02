@@ -42,13 +42,13 @@ Once you've installed PyCharm, open it, then click File > Open and open the fold
 This opens the experiment directory as a PyCharm 'project'.
 It may ask you to setup an 'interpreter' at this point; ignore this message and click cancel.
 
-Within PyCharm, double-click `build.sh`, and then run it by clicking the little green 'run' symbol 
-in the top left corner of the script. This will build a local 'image' for your experiment. It might take a 
+To run the project in debug mode, run the following in your terminal: `bash scripts/debug.sh`. 
+The first time you run this it will build a local 'image' for your experiment. It might take a 
 couple of minutes or so.
 
 In the bottom right corner of your screen you should see the following text: "<No interpreter>".
 Click on this text and click 'Add interpreter'.
-Click Docker, and then under 'image name' enter 'consonance-dichotic-stretching:latest' (no quotes).
+Click Docker, and then under 'image name' enter '2022-consonance-carillon:latest' (no quotes).
 Press OK. Now if you click on 'Python console' at the bottom of the screen, you should get a Python interpreter
 corresponding to the image you just built.
 
