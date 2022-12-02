@@ -2,20 +2,17 @@
 
 import random
 
-from flask import Markup
-
 import psynet.experiment
+from flask import Markup
 from psynet.asset import FastFunctionAsset
-from psynet.consent import MainConsent, NoConsent
-from psynet.modular_page import PushButtonControl
+from psynet.consent import NoConsent
+from psynet.modular_page import PushButtonControl, AudioPrompt
 from psynet.page import InfoPage, SuccessfulEndPage, ModularPage
 from psynet.timeline import Timeline
 from psynet.trial.static import StaticTrial, StaticNode, StaticTrialMaker
 from psynet.utils import get_logger
 
-from psynet.js_synth import JSSynth, Chord, StretchedTimbre, InstrumentTimbre
-
-from .carillon import carillon_timbre
+from .synth import synth_stimulus
 
 logger = get_logger()
 
@@ -32,9 +29,9 @@ nodes = [
 ]
 
 
-timbres = {
-    "carillon": carillon_timbre
-}
+# timbres = {
+#     "carillon": carillon_timbre
+# }
 
 
 class ConsonanceTrial(StaticTrial):
@@ -56,25 +53,13 @@ class ConsonanceTrial(StaticTrial):
         )
         return definition
 
-    def synth_stimulus(self, path, lower_pitch, upper_pitch):
-        carillon_timbre
 
     def show_trial(self, experiment, participant):
         return ModularPage(
             "chord_player",
-            JSSynth(
+            AudioPrompt(
+                self.assets["stimulus"],
                 Markup("Please rate the sound for <strong>pleasantness</strong> on a scale from 1 to 7."),
-                [
-                    Chord(
-                        [
-                            self.definition["lower_pitch"],
-                            self.definition["upper_pitch"],
-                        ],
-                        duration=self.definition["duration"],
-                        volume=0.5,  # Needed otherwise the sound gets distorted
-                    )
-                ],
-                timbre=timbres[self.definition["timbre"]],
             ),
             PushButtonControl(
                 choices=[1, 2, 3, 4, 5, 6, 7],
