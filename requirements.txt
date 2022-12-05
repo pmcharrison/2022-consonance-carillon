@@ -9,7 +9,7 @@
 dallinger@git+https://github.com/Dallinger/Dallinger.git@cb8e1db0e97e45ba5582f15cdfd24f55ce452b7f#egg=dallinger
 
 # Example pinning a particular version of PsyNet
-psynet@git+https://gitlab.com/psynetdev/psynet@05bf9dde3670736688b55eeedf66e92b4a21bc61#egg=psynet
+psynet@git+https://gitlab.com/psynetdev/psynet@d88d64b6f3b54ec6de9380cc545300bb20eedd61#egg=psynet
 
 librosa==0.9.2
 numpy

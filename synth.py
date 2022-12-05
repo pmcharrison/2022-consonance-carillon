@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import soundfile as sf
 
+from psynet.utils import log_time_taken
+
 
 def freq_to_midi(frequency, ref=440):
     return 69 + np.log2(frequency / ref) * 12
@@ -30,7 +32,7 @@ def import_carillon_samples():
 
 carillon_samples = import_carillon_samples()
 
-
+@log_time_taken
 def synth_stimulus(path, lower_pitch, upper_pitch):
     sample_rate = 44100
 
@@ -65,9 +67,10 @@ def make_waveform(chosen_sample, expected_sample_rate):
 
 
 def mix_waveforms(waveforms):
+    n_waveforms = len(waveforms)
     n_samples = max([len(waveform) for waveform in waveforms])
     padded_waveforms = [librosa.util.fix_length(waveform, size=n_samples) for waveform in waveforms]
-    return np.stack(padded_waveforms).sum(axis = 0)
+    return np.stack(padded_waveforms).sum(axis = 0) / n_waveforms
 
 
 # with tempfile.NamedTemporaryFile(suffix=".wav") as f:

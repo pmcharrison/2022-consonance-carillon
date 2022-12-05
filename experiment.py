@@ -29,9 +29,8 @@ nodes = [
 ]
 
 
-# timbres = {
-#     "carillon": carillon_timbre
-# }
+def func(path):
+    pass
 
 
 class ConsonanceTrial(StaticTrial):
@@ -52,7 +51,6 @@ class ConsonanceTrial(StaticTrial):
             }
         )
         return definition
-
 
     def show_trial(self, experiment, participant):
         return ModularPage(
