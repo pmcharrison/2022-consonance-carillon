@@ -8,7 +8,7 @@ from psynet.asset import FastFunctionAsset
 from psynet.consent import NoConsent
 from psynet.modular_page import PushButtonControl, AudioPrompt
 from psynet.page import InfoPage, SuccessfulEndPage, ModularPage
-from psynet.timeline import Timeline
+from psynet.timeline import Timeline, Event
 from psynet.trial.static import StaticTrial, StaticNode, StaticTrialMaker
 from psynet.utils import get_logger
 
@@ -38,9 +38,12 @@ class ConsonanceTrial(StaticTrial):
 
     def finalize_definition(self, definition, experiment, participant):
         definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
-        definition["lower_pitch"] = random.uniform(79, 79)  # The current samples go from MIDI 78.56 to 92.5
+        # definition["lower_pitch"] = random.uniform(79, 79)  # The current samples go from MIDI 78.56 to 92.5
+        definition["centre_pitch"] = random.uniform(85, 85)
         definition["pitch_interval"] = random.uniform(0, 15)
-        definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
+        # definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
+        definition["lower_pitch"] = definition["centre_pitch"] - definition["pitch_interval"] / 2
+        definition["upper_pitch"] = definition["centre_pitch"] + definition["pitch_interval"] / 2
 
         self.add_assets(
             {
@@ -71,7 +74,11 @@ class ConsonanceTrial(StaticTrial):
                     "(7) Very pleasant",
                 ],
                 arrange_vertically=True,
-            )
+            ),
+            events={
+                "responseEnable": Event(is_triggered_by="promptEnd"),
+                "submitEnable": Event(is_triggered_by="promptEnd")
+            }
         )
 
 
