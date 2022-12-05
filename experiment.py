@@ -2,19 +2,17 @@
 
 import random
 
-from flask import Markup
-
 import psynet.experiment
-from psynet.consent import MainConsent, NoConsent
-from psynet.modular_page import PushButtonControl
+from flask import Markup
+from psynet.asset import FastFunctionAsset
+from psynet.consent import NoConsent
+from psynet.modular_page import PushButtonControl, AudioPrompt
 from psynet.page import InfoPage, SuccessfulEndPage, ModularPage
-from psynet.timeline import Timeline
+from psynet.timeline import Timeline, Event
 from psynet.trial.static import StaticTrial, StaticNode, StaticTrialMaker
 from psynet.utils import get_logger
 
-from psynet.js_synth import JSSynth, Chord, StretchedTimbre, InstrumentTimbre
-
-from .carillon import carillon_timbre
+from .synth import synth_stimulus
 
 logger = get_logger()
 
@@ -31,9 +29,8 @@ nodes = [
 ]
 
 
-timbres = {
-    "carillon": carillon_timbre
-}
+def func(path):
+    pass
 
 
 class ConsonanceTrial(StaticTrial):
@@ -41,28 +38,29 @@ class ConsonanceTrial(StaticTrial):
 
     def finalize_definition(self, definition, experiment, participant):
         definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
-        definition["lower_pitch"] = random.uniform(79, 79)  # The current samples go from MIDI 78.56 to 92.5
+        # definition["lower_pitch"] = random.uniform(79, 79)  # The current samples go from MIDI 78.56 to 92.5
+        definition["centre_pitch"] = random.uniform(85, 85)
         definition["pitch_interval"] = random.uniform(0, 15)
-        definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
+        # definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
+        definition["lower_pitch"] = definition["centre_pitch"] - definition["pitch_interval"] / 2
+        definition["upper_pitch"] = definition["centre_pitch"] + definition["pitch_interval"] / 2
 
+        self.add_assets(
+            {
+                "stimulus": FastFunctionAsset(
+                    function=synth_stimulus,
+                    extension=".wav",
+                )
+            }
+        )
         return definition
 
     def show_trial(self, experiment, participant):
         return ModularPage(
             "chord_player",
-            JSSynth(
+            AudioPrompt(
+                self.assets["stimulus"],
                 Markup("Please rate the sound for <strong>pleasantness</strong> on a scale from 1 to 7."),
-                [
-                    Chord(
-                        [
-                            self.definition["lower_pitch"],
-                            self.definition["upper_pitch"],
-                        ],
-                        duration=self.definition["duration"],
-                        volume=0.5,  # Needed otherwise the sound gets distorted
-                    )
-                ],
-                timbre=timbres[self.definition["timbre"]],
             ),
             PushButtonControl(
                 choices=[1, 2, 3, 4, 5, 6, 7],
@@ -76,7 +74,11 @@ class ConsonanceTrial(StaticTrial):
                     "(7) Very pleasant",
                 ],
                 arrange_vertically=True,
-            )
+            ),
+            events={
+                "responseEnable": Event(is_triggered_by="promptEnd"),
+                "submitEnable": Event(is_triggered_by="promptEnd")
+            }
         )
 
 

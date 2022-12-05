@@ -10,7 +10,7 @@
 #   This simplifies the logic and ensures that experimenters can specify package versions precisely if they want.
 #   The small performance overhead is mostly eliminated by caching.
 
-FROM registry.gitlab.com/psynetdev/psynet:v10-draft
+FROM registry.gitlab.com/psynetdev/psynet:v10-release-candidate
 
 RUN mkdir /experiment
 WORKDIR /experiment
@@ -21,7 +21,7 @@ RUN python3 -m pip install -r requirements.txt
 WORKDIR /
 
 ARG PSYNET_EDITABLE
-RUN if [[ "$PSYNET_EDITABLE" = 1 ]] ; then pip install -e /PsyNet ; fi
+RUN if [[ "$PSYNET_EDITABLE" = 1 ]] ; then pip install --no-dependencies -e /PsyNet ; fi
 
 WORKDIR /experiment
 
