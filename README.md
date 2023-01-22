@@ -1,10 +1,9 @@
 # README
 
-This is a draft PsyNet experiment implementation for a research project by James MacConnachie and Peter Harrison
-at the [Centre for Music and Science, University of Cambridge](https://cms.mus.cam.ac.uk/).
+This experiment is implemented using the [PsyNet framework](https://www.psynet.dev/).
 
-For installation instructions, see INSTALL.md.
+For installation instructions, see docs/INSTALL.md.
 
-For a list of run commands, see RUN.md.
+For a list of run commands, see docs/RUN.md.
 
 For more information about PsyNet, see the [documentation website](https://psynetdev.gitlab.io/PsyNet/).
