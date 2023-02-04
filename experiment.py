@@ -41,7 +41,7 @@ nodes = [
 
 
 class ConsonanceTrial(StaticTrial):
-    time_estimate = 6
+    time_estimate = 5
 
     def finalize_definition(self, definition, experiment, participant):
         definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
