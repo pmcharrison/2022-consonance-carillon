@@ -5,16 +5,27 @@ import random
 import psynet.experiment
 from flask import Markup
 from psynet.asset import FastFunctionAsset
-from psynet.consent import NoConsent
 from psynet.modular_page import PushButtonControl, AudioPrompt
 from psynet.page import InfoPage, SuccessfulEndPage, ModularPage
+from psynet.prescreen import HeadphoneTest
 from psynet.timeline import Timeline, Event
 from psynet.trial.static import StaticTrial, StaticNode, StaticTrialMaker
 from psynet.utils import get_logger
 
+from .consent import consent
+from .instructions import instructions
+from .questionnaire import questionnaire
 from .synth import synth_stimulus
+from .volume_calibration import volume_calibration
 
 logger = get_logger()
+
+
+TRIALS_PER_PARTICIPANT = 50
+N_REPEAT_TRIALS = 4
+
+TRIALS_PER_PARTICIPANT = 1  # For debugging
+N_REPEAT_TRIALS = 1
 
 
 nodes = [
@@ -29,21 +40,17 @@ nodes = [
 ]
 
 
-def func(path):
-    pass
-
-
 class ConsonanceTrial(StaticTrial):
-    time_estimate = 5
+    time_estimate = 6
 
     def finalize_definition(self, definition, experiment, participant):
         definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
-        # definition["lower_pitch"] = random.uniform(79, 79)  # The current samples go from MIDI 78.56 to 92.5
-        definition["centre_pitch"] = random.uniform(85, 85)
+        definition["lower_pitch"] = random.uniform(77, 79)
+        # definition["centre_pitch"] = random.uniform(85, 85)
         definition["pitch_interval"] = random.uniform(0, 15)
-        # definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
-        definition["lower_pitch"] = definition["centre_pitch"] - definition["pitch_interval"] / 2
-        definition["upper_pitch"] = definition["centre_pitch"] + definition["pitch_interval"] / 2
+        definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
+        # definition["lower_pitch"] = definition["centre_pitch"] - definition["pitch_interval"] / 2
+        # definition["upper_pitch"] = definition["centre_pitch"] + definition["pitch_interval"] / 2
 
         self.add_assets(
             {
@@ -82,35 +89,64 @@ class ConsonanceTrial(StaticTrial):
         )
 
 
+class ConsonanceTrialMaker(StaticTrialMaker):
+    performance_check_type = "consistency"
+    consistency_check_type = "spearman"
+    give_end_feedback_passed = False
+
+    def compute_bonus(self, score, passed):
+        max_bonus = 0.40
+
+        if score is None or score <= 0.0:
+            bonus = 0.0
+        else:
+            bonus = max_bonus * score
+
+        bonus = min(bonus, max_bonus)
+        return bonus
+
+
 class Exp(psynet.experiment.Experiment):
     label = "Carillon experiment"
+    initial_recruitment_size = 1
+
+    variables = {
+        "currency": "£",
+        "wage_per_hour": 10,
+        "window_width": 1024,
+        "window_height": 1024,
+    }
 
     timeline = Timeline(
-        NoConsent(),
-        # To do - add Cambridge consent
-        # To do - add volume calibration
+        consent,
         InfoPage(
-            "Welcome to the experiment!",
+            "This experiment requires you to wear headphones. Please ensure you have plugged yours in now.",
             time_estimate=5,
         ),
-        StaticTrialMaker(
+        volume_calibration(),
+        InfoPage(
+            """
+            We will now perform a short listening test to verify that your audio is working properly.
+            This test will be difficult to pass unless you listen carefully over your headphones.
+            Press 'Next' when you are ready to start.
+            """,
+            time_estimate=5,
+        ),
+        HeadphoneTest(),
+        instructions(),
+        ConsonanceTrialMaker(
             id_="consonance_main_experiment",
             trial_class=ConsonanceTrial,
             nodes=nodes,
-            expected_trials_per_participant=len(nodes),
-            max_trials_per_participant=len(nodes),
+            expected_trials_per_participant=TRIALS_PER_PARTICIPANT,
+            max_trials_per_participant=TRIALS_PER_PARTICIPANT,
             recruit_mode="n_participants",
             allow_repeated_nodes=False,
-            n_repeat_trials=0,
+            n_repeat_trials=N_REPEAT_TRIALS,
             balance_across_nodes=False,
             target_n_participants=50,
+            check_performance_at_end=True,
         ),
-        # To do - add questionnaire
+        questionnaire(),
         SuccessfulEndPage(),
     )
-
-    def __init__(self, session=None):
-        super().__init__(session)
-        self.initial_recruitment_size = (
-            1
-        )
