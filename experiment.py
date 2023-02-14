@@ -14,7 +14,7 @@ from psynet.utils import get_logger
 
 from .consent import consent
 from .instructions import instructions
-from .questionnaire import questionnaire
+from .questionnaire import debrief, questionnaire
 from .synth import synth_stimulus
 from .volume_calibration import volume_calibration
 
@@ -24,8 +24,8 @@ logger = get_logger()
 TRIALS_PER_PARTICIPANT = 50
 N_REPEAT_TRIALS = 4
 
-TRIALS_PER_PARTICIPANT = 1  # For debugging
-N_REPEAT_TRIALS = 1
+# TRIALS_PER_PARTICIPANT = 1  # For debugging
+# N_REPEAT_TRIALS = 1
 
 
 nodes = [
@@ -45,7 +45,7 @@ class ConsonanceTrial(StaticTrial):
 
     def finalize_definition(self, definition, experiment, participant):
         definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
-        definition["lower_pitch"] = random.uniform(77, 79)
+        definition["lower_pitch"] = random.uniform(65, 67)
         # definition["centre_pitch"] = random.uniform(85, 85)
         definition["pitch_interval"] = random.uniform(0, 15)
         definition["upper_pitch"] = definition["lower_pitch"] + definition["pitch_interval"]
@@ -148,5 +148,6 @@ class Exp(psynet.experiment.Experiment):
             check_performance_at_end=True,
         ),
         questionnaire(),
+        debrief(),
         SuccessfulEndPage(),
     )
