@@ -151,3 +151,4 @@ class Exp(psynet.experiment.Experiment):
         debrief(),
         SuccessfulEndPage(),
     )
+
