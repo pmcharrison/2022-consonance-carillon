@@ -41,7 +41,7 @@ nodes = [
 
 
 class ConsonanceTrial(StaticTrial):
-    time_estimate = 5
+    time_estimate = 7.5
 
     def finalize_definition(self, definition, experiment, participant):
         definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
@@ -91,7 +91,7 @@ class ConsonanceTrial(StaticTrial):
 
 class ConsonanceTrialMaker(StaticTrialMaker):
     performance_check_type = "consistency"
-    consistency_check_type = "spearman"
+    consistency_check_type = "spearman_correlation"
     give_end_feedback_passed = False
 
     def compute_bonus(self, score, passed):
