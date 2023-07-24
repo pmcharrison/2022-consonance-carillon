@@ -1,15 +1,4 @@
-# Example pinning a particular version of Dallinger
-#
-# Note that caching means that, if you're pinning to a particular branch,
-# then subsequent updates to that branch won't necessarily be incorporated into the Docker image.
-# If you want to ensure that you have the latest version of the branch, it's best to pin
-# to a particular commit.
-#
-dallinger@git+https://github.com/Dallinger/Dallinger.git@b9e3b266dc13def85218c54ab236105eeda4c6fc#egg=dallinger
-
-# Example pinning a particular version of PsyNet
-psynet@git+https://gitlab.com/psynetdev/psynet@d54c3f7a0afddebe1e53676c47c9a31f9cb9a827#egg=psynet
-
+psynet@git+https://gitlab.com/PsyNetDev/PsyNet@v10.1.0#egg=psynet
 librosa==0.9.2
 numpy
 pandas

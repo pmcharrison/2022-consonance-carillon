@@ -7,7 +7,7 @@ from flask import Markup
 from psynet.asset import FastFunctionAsset
 from psynet.modular_page import PushButtonControl, AudioPrompt
 from psynet.page import InfoPage, SuccessfulEndPage, ModularPage
-from psynet.prescreen import HeadphoneTest
+from psynet.prescreen import AntiphaseHeadphoneTest
 from psynet.timeline import Timeline, Event
 from psynet.trial.static import StaticTrial, StaticNode, StaticTrialMaker
 from psynet.utils import get_logger
@@ -110,9 +110,7 @@ class Exp(psynet.experiment.Experiment):
     label = "Carillon experiment"
     initial_recruitment_size = 1
 
-    variables = {
-        "currency": "£",
-        "wage_per_hour": 10,
+    config = {
         "window_width": 1024,
         "window_height": 1024,
     }
@@ -132,7 +130,7 @@ class Exp(psynet.experiment.Experiment):
             """,
             time_estimate=5,
         ),
-        HeadphoneTest(),
+        AntiphaseHeadphoneTest(),
         instructions(),
         ConsonanceTrialMaker(
             id_="consonance_main_experiment",
