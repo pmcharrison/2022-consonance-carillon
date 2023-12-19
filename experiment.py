@@ -44,7 +44,6 @@ class ConsonanceTrial(StaticTrial):
     time_estimate = 7.5
 
     def finalize_definition(self, definition, experiment, participant):
-        definition["duration"] = 10  # The original duration in Marjieh et al. was 1.3 s
         definition["lower_pitch"] = random.uniform(65, 67)
         # definition["centre_pitch"] = random.uniform(85, 85)
         definition["pitch_interval"] = random.uniform(0, 15)
