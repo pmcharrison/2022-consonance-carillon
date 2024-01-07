@@ -3,7 +3,7 @@
 import random
 
 import psynet.experiment
-from flask import Markup
+from markupsafe import Markup
 from psynet.asset import FastFunctionAsset
 from psynet.modular_page import PushButtonControl, AudioPrompt
 from psynet.page import InfoPage, SuccessfulEndPage, ModularPage

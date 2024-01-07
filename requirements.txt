@@ -1,5 +1,6 @@
-psynet@git+https://gitlab.com/PsyNetDev/PsyNet@v10.1.0#egg=psynet
+psynet==11.0.0
 librosa==0.9.2
+markup
 numpy
 pandas
 soundfile
