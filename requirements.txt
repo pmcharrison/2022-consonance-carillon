@@ -4,3 +4,4 @@ markup
 numpy
 pandas
 soundfile
+IPython
