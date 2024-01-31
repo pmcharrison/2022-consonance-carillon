@@ -10,7 +10,7 @@
 #   This simplifies the logic and ensures that experimenters can specify package versions precisely if they want.
 #   The small performance overhead is mostly eliminated by caching.
 
-FROM registry.gitlab.com/psynetdev/psynet:v10.3.1
+FROM registry.gitlab.com/psynetdev/psynet:v11.0.0
 
 # This is used for debugging experiments using PyCharm
 RUN python3 -m pip install pydevd-pycharm~=221.6008.17
